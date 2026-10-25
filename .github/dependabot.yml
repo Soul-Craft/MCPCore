@@ -1,0 +1,13 @@
+# Always the newest (owner, 2026-10-25). Package.swift has no remote dependencies, so only the Actions in ci.yml
+# are watched. Checked every weekday; all bumps arrive in one pull request, which ci.yml's dependabot-merge job
+# squash-merges once CI passes, majors too.
+version: 2
+updates:
+  # Actions are pinned to full commit SHAs (the version is the comment beside each).
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: daily
+    groups:
+      actions:
+        patterns: ["*"]

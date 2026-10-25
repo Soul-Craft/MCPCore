@@ -1,0 +1,45 @@
+# The check on every pull request and on main: the package builds and its XCTest suite passes on Linux, with the
+# Swift that ships on the ubuntu runner image (a macOS runner would cost 10x the minutes). The code is Foundation-only,
+# but Glibc declares stdout and stderr as mutable globals, which Swift 6 mode rejects as not concurrency-safe (Darwin
+# doesn't), so Linux compiles in Swift 5 mode, where that is a warning. The Swift 6 build for macOS, the package's
+# only platform, stays local. A last job merges Dependabot's pull requests once the check passes: this personal
+# private repository cannot have branch protection, so GitHub's own auto-merge could not wait for it.
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - run: swift --version
+
+      - run: swift build -Xswiftc -swift-version -Xswiftc 5
+
+      - run: swift test -Xswiftc -swift-version -Xswiftc 5
+
+  # Owner, 2026-10-25: every Dependabot update merges once all other jobs pass, majors too.
+  dependabot-merge:
+    needs: [test]
+    if: github.event_name == 'pull_request' && github.event.pull_request.user.login == 'dependabot[bot]'
+    runs-on: ubuntu-24.04
+    permissions: {contents: write, pull-requests: write}
+    steps:
+      - run: gh pr merge --squash --delete-branch "$PR"
+        env: {GH_TOKEN: "${{ github.token }}", PR: "${{ github.event.pull_request.html_url }}"}
