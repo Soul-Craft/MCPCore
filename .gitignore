@@ -1,0 +1,10 @@
+Texts/
+*.local.json
+**/.claude/settings.local.json
+**/.claude/worktrees/
+*.backup.json
+*.bak*
+.build/
+.swiftpm/
+__pycache__/
+.DS_Store
