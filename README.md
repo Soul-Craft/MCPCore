@@ -59,3 +59,7 @@ Scripts/check-dependents.sh               # on the Mac: build every dependent ag
 
 Change `Sources/` through a pull request with tests. Dependents pick changes up by moving to a new tag.
 The archived [Soul-Craft/MacApps](https://github.com/Soul-Craft/MacApps) monorepo was the original home of this code.
+
+## License
+
+[MIT](LICENSE), copyright 2026 Soul-Craft.
