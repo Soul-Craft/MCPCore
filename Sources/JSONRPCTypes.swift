@@ -32,13 +32,15 @@ public struct JSONRPCResponse: Encodable, Sendable {
     }
 }
 
-/// A JSON-RPC 2.0 error object.
+/// A JSON-RPC 2.0 error object. `data` is omitted from the JSON when nil.
 public struct JSONRPCError: Encodable, Sendable {
     public let code: Int
     public let message: String
+    public let data: AnyCodableValue?
 
-    public init(code: Int, message: String) {
+    public init(code: Int, message: String, data: AnyCodableValue? = nil) {
         self.code = code
         self.message = message
+        self.data = data
     }
 }

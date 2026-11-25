@@ -1,0 +1,28 @@
+name: Bug
+description: Something in MCPCore behaves wrongly
+labels: [bug]
+body:
+  - type: input
+    id: version
+    attributes:
+      label: MCPCore version or commit
+      placeholder: v1.0.0
+    validations:
+      required: true
+  - type: input
+    id: dependent
+    attributes:
+      label: Dependent server
+      placeholder: Messages, WhatsApp, Contacts or GIFMaker
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened, and what you expected
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Request line or test that shows it
+      description: Do not paste message content, contact details or tokens.
+      render: json

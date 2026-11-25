@@ -1,0 +1,21 @@
+name: Improvement
+description: New API, protocol support or tooling for MCPCore
+labels: [enhancement]
+body:
+  - type: textarea
+    id: need
+    attributes:
+      label: What a dependent needs
+    validations:
+      required: true
+  - type: dropdown
+    id: impact
+    attributes:
+      label: Release impact (docs/SPEC.md versioning policy)
+      options: [Patch, Minor, Major, Not sure]
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: Spec or doc source, with the date read

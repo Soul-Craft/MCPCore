@@ -1,0 +1,33 @@
+# Builds every dependent server (Messages, Contacts, WhatsApp) against this commit, so a breaking change cannot ship
+# silently. It runs on release-candidate tags (v*-rc*) and on demand, on macOS, because the dependents link Apple
+# frameworks. Cloning the private dependents needs DEPENDENTS_READ_TOKEN: a fine-grained token with Contents: read on
+# those repos only (docs/RELEASING.md, "Private access"). Without the secret the job is skipped with a notice, and the
+# same check runs on the Mac with Scripts/check-dependents.sh.
+name: dependents
+
+on:
+  push:
+    tags: ['v*-rc*']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-dependents:
+    runs-on: macos-26
+    timeout-minutes: 40
+    env:
+      DEPENDENTS_READ_TOKEN: ${{ secrets.DEPENDENTS_READ_TOKEN }}
+    steps:
+      - name: Skip without the read token
+        if: env.DEPENDENTS_READ_TOKEN == ''
+        run: echo "::notice::DEPENDENTS_READ_TOKEN is not set; run Scripts/check-dependents.sh on the Mac instead."
+
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        if: env.DEPENDENTS_READ_TOKEN != ''
+        with:
+          persist-credentials: false
+
+      - if: env.DEPENDENTS_READ_TOKEN != ''
+        run: Scripts/check-dependents.sh "$RUNNER_TEMP/dependents"

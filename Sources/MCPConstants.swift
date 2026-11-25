@@ -9,14 +9,19 @@ import Darwin
 import Glibc
 #endif
 
-/// MCP protocol version — keep in sync with spec updates.
+/// MCP protocol version answered on `initialize` (the legacy, handshake-based era).
+/// The modern revision is `MCPProtocol.modernVersion`.
 public let mcpProtocolVersion = "2025-11-25"
 
 /// Standard JSON-RPC 2.0 error codes used by MCP servers.
 public enum JSONRPCErrorCode {
     public static let parseError = -32700
+    public static let invalidRequest = -32600
     public static let methodNotFound = -32601
     public static let invalidParams = -32602
+    public static let internalError = -32603
+    /// MCP 2026-07-28 `UnsupportedProtocolVersionError`.
+    public static let unsupportedProtocolVersion = -32022
 }
 
 /// Builds a standard MCP initialize result with server info and capabilities.
