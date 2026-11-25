@@ -2,11 +2,7 @@
 
 ## Reporting a vulnerability
 
-1. Open a GitHub issue that says only that you found a security problem. Do not include technical details.
-2. The repository owner follows up privately to collect the details.
-
-GitHub private vulnerability reporting is not available on this private repository. If it is ever made public,
-report through [GitHub Security Advisories](https://github.com/Soul-Craft/MCPCore/security/advisories/new) instead.
+Report through [GitHub Security Advisories](https://github.com/Soul-Craft/MCPCore/security/advisories/new). Private reporting keeps the details out of public view until a fix ships.
 
 ## Supported versions
 
